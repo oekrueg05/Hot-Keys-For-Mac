@@ -1,0 +1,5 @@
+{
+  "<cmd>+<shift>+j": {"type": "app", "target": "Notes"},
+  "<cmd>+<shift>+k": {"type": "shell", "target": "say hello"},
+  "<cmd>+<shift>+l": {"type": "text", "target": "hello@email.com"}
+}
