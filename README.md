@@ -63,6 +63,16 @@ python3 main.py -c /path/to/other-hotkeys.json
 
 Logs are written to `hotkeys.log` and echoed to stdout. Stop with `Ctrl+C`.
 
+## Edit hotkeys with a GUI (optional)
+
+```bash
+python3 config_editor.py
+```
+
+A small Tkinter window listing all configured hotkeys, with **Add**, **Edit** (or double-click a row), **Delete**, and **Save**. Hotkey syntax is validated with `pynput`'s own parser before it's saved, so you can't write a combo the listener can't load. It edits `hotkeys.json` directly — if `main.py` or `menubar.py` is already running, saving here triggers their normal hot-reload within a couple seconds.
+
+Tkinter ships with the python.org installer; on Homebrew Python you may need `brew install python-tk`.
+
 ## Run as a menu bar app (optional)
 
 ```bash
