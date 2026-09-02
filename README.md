@@ -1,6 +1,6 @@
 # Hot-Keys
 
-A lightweight background app for macOS that lets you define global keyboard shortcuts, each triggering a custom action (open an app, run a shell command, or type text).
+A lightweight background app for macOS that lets you define global keyboard shortcuts, each triggering a custom action (open an app, run a shell command, type text, or run AppleScript/VBA), optionally scoped to only fire when a specific app — e.g. Microsoft Excel — is frontmost.
 
 ## Install
 
@@ -10,7 +10,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-`pyobjc-framework-Quartz` is optional — it's only used to detect whether Accessibility permission is granted and print a helpful message. The app still runs without it.
+`pyobjc-framework-Quartz` is optional — it's only used to detect whether Accessibility permission is granted and print a helpful message. `pyobjc-framework-Cocoa` is optional too — it's only needed for `app_scope` (below). The app still runs without either.
 
 ## Configure hotkeys
 
@@ -20,7 +20,12 @@ Edit `hotkeys.json`. Keys use `pynput`'s hotkey syntax (modifiers wrapped in `<.
 {
   "<cmd>+<shift>+j": {"type": "app", "target": "Notes"},
   "<cmd>+<shift>+k": {"type": "shell", "target": "say hello"},
-  "<cmd>+<shift>+l": {"type": "text", "target": "hello@email.com"}
+  "<cmd>+<shift>+l": {"type": "text", "target": "hello@email.com"},
+  "<cmd>+<shift>+u": {
+    "type": "applescript",
+    "target": "tell application \"Microsoft Excel\" to set value of active cell to \"=SUM(A1:A10)\"",
+    "app_scope": "Microsoft Excel"
+  }
 }
 ```
 
@@ -28,6 +33,9 @@ Action types:
 - `app` — opens `target` with `open -a "<target>"`
 - `shell` — runs `target` as a command (parsed with `shlex`, no shell interpolation — pipes/redirects won't work)
 - `text` — types `target` out via the keyboard controller
+- `applescript` — runs `target` as an AppleScript via `osascript`. This is how to drive Excel directly: set cell values/formulas, run a VBA macro (`tell application "Microsoft Excel" to run VBA macro "MacroName"`), navigate sheets, etc. — anything in Excel's AppleScript dictionary.
+
+**`app_scope`** (optional, any action type): the hotkey only fires when the named app (its localized name, e.g. `"Microsoft Excel"`) is frontmost. If another app is frontmost, the keystroke is ignored by this tool and passes through untouched — so scoped hotkeys won't hijack the same shortcut in other apps. Requires `pyobjc-framework-Cocoa`; without it, scoped hotkeys log a warning and never fire.
 
 Editing `hotkeys.json` while the app is running is picked up automatically within a couple seconds (no restart needed).
 

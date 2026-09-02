@@ -1,5 +1,10 @@
 {
   "<cmd>+<shift>+j": {"type": "app", "target": "Notes"},
   "<cmd>+<shift>+k": {"type": "shell", "target": "say hello"},
-  "<cmd>+<shift>+l": {"type": "text", "target": "hello@email.com"}
+  "<cmd>+<shift>+l": {"type": "text", "target": "hello@email.com"},
+  "<cmd>+<shift>+u": {
+    "type": "applescript",
+    "target": "tell application \"Microsoft Excel\" to set value of active cell to \"=SUM(A1:A10)\"",
+    "app_scope": "Microsoft Excel"
+  }
 }
