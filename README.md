@@ -55,6 +55,19 @@ python3 main.py -c /path/to/other-hotkeys.json
 
 Logs are written to `hotkeys.log` and echoed to stdout. Stop with `Ctrl+C`.
 
+## Run as a menu bar app (optional)
+
+```bash
+python3 menubar.py
+```
+
+Shows a keyboard icon in the menu bar with:
+- **Active** — checkbox toggle to start/stop the listener without quitting
+- **Reload Config** — manually re-read `hotkeys.json`
+- **Quit**
+
+The icon label switches to "(off)" while stopped. Config hot-reload (via the same file-watch as `main.py`) still applies whenever the listener is active.
+
 ## Auto-start at login (optional)
 
 To run automatically on login, create a `launchd` plist in `~/Library/LaunchAgents/` pointing at your venv's Python and `main.py`, then load it with `launchctl load ~/Library/LaunchAgents/<name>.plist`.
