@@ -70,4 +70,16 @@ The icon label switches to "(off)" while stopped. Config hot-reload (via the sam
 
 ## Auto-start at login (optional)
 
-To run automatically on login, create a `launchd` plist in `~/Library/LaunchAgents/` pointing at your venv's Python and `main.py`, then load it with `launchctl load ~/Library/LaunchAgents/<name>.plist`.
+```bash
+./install_launch_agent.sh          # installs menubar.py as the login item
+./install_launch_agent.sh main.py  # or install main.py (no menu bar) instead
+```
+
+This generates `~/Library/LaunchAgents/com.hotkeys.menubar.plist` from `com.hotkeys.menubar.plist.template` (using your venv's Python if `venv/` exists, otherwise whatever `python3` is on `PATH`), then loads it with `launchctl`. The app now starts automatically at login and restarts itself if it crashes (but not if you quit it deliberately via the menu bar or `Ctrl+C`). Output is logged to `launchd.out.log` / `launchd.err.log` in this directory.
+
+To remove it:
+
+```bash
+launchctl unload ~/Library/LaunchAgents/com.hotkeys.menubar.plist
+rm ~/Library/LaunchAgents/com.hotkeys.menubar.plist
+```
